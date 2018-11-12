@@ -1,0 +1,18 @@
+# automatically expand info properties from the Maven project using resource filtering
+info.build.artifact: "@project.artifactId@"
+info.build.name: "@project.name@"
+info.build.description: "@project.description@"
+info.build.version: "@project.version@"
+
+spring: 
+  cloud: 
+    stream: 
+      bindings: 
+        direct-tx-monitoring-input: 
+          destination: direct-tx-monitoring
+          group: direct-tx-monitoring-stream-group
+          consumer:
+            concurrency: 10       
+            maxAttempts: 10
+            backOffInitialInterval: 15000
+            backOffMaxInterval: 120000   

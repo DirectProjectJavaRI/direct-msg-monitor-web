@@ -1,0 +1,44 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+   <route id="direct-reliable">
+      <from uri="direct:start"/>
+      <onException>
+           <exception>org.nhindirect.monitor.repository.AggregationVersionException</exception>
+           <redeliveryPolicy maximumRedeliveries="-1" 
+                redeliveryDelay="200" collisionAvoidanceFactor="0.15"/>
+      </onException>         
+      <aggregate strategyRef="aggregationStrategy" ignoreInvalidCorrelationKeys="true"
+                aggregationRepositoryRef="directMonitoringRepo">
+        <correlationExpression>
+            <ref>msgIdCorrelator</ref>
+        </correlationExpression>
+        <completionPredicate>
+          <method bean="aggregationStrategy" method="isAggregationComplete"/>
+        </completionPredicate>     
+        <completionTimeout>
+          <method bean="aggregationStrategy" method="getAggregationTime"/>
+        </completionTimeout>  
+        <choice>
+           <when>
+              <method bean="aggregationStrategy" method="isAggregationComplete"/>
+              <stop/>
+           </when>
+           <otherwise>
+              <bean ref="dsnMessageProcessor"/>
+              <bean ref="duplicationStateManager" method ="addNotificationForMonitorGeneratedDSN"/>    
+              <bean ref="dsnSender"/>  
+           </otherwise>
+        </choice>      
+      </aggregate>
+    </route>
+    
+    <!--  Simple timer to purge exchanges in the duplication data base.
+          This can replaced more sophisticated quartz configuration using 
+          the Camel Quartz component and cron expressions.  Default configuration
+          purges the table once every 6 hours.
+     -->    
+    <route id="duplicate-store-purge">
+      <from uri="timer://purgeTimer?period=6h"/>
+      <bean ref="duplicationStateManager" method="purge"/>
+    </route> 
+
+</routes>  
