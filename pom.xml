@@ -3,16 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nhind</groupId>
 	<artifactId>direct-msg-monitor-web</artifactId>
-	<version>6.0-SNAPSHOT</version>
+	<version>6.0</version>
 	<packaging>war</packaging>
 	<name>NHIN-Direct Message Monitor Web Application Module</name>
 	<description>NHIN-Direct Message Monitor Web Application Module</description>
 
-    <url>http://api.nhindirect.org/x/www/api.nhindirect.org/java/site/config/config-service-war/${project.version}</url>     
+    <url>https://github.com/DirectProjectJavaRI/direct-msg-monitor-web</url>     
 	
 	<scm>
-		<url>https://nhin-d.googlecode.com/hg/java/config/config-service-war</url>
-		<connection>scm:hg:https://nhin-d.googlecode.com/hg/nhin-d/java/config/config-service-war</connection>
+		<url>scm:git:https://github.com/DirectProjectJavaRI/direct-msg-monitor-web.git</url>
+		<connection>scm:git:https://github.com/DirectProjectJavaRI/direct-msg-monitor-web.git</connection>
 	</scm>
     <prerequisites>
         <maven>3.0.0</maven>
@@ -42,14 +42,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<camel.version>2.22.0</camel.version>
-	</properties>    
-	 <repositories>
-       <repository>
-           <id>spring-milestone</id>
-           <name>Spring Milestone Releases</name>
-           <url>https://repo.spring.io/milestone/</url>
-       </repository>
-    </repositories>  	
+	</properties>     	
 	<dependencyManagement>
 		<dependencies>											
 			<dependency>
@@ -62,7 +55,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-starter-parent</artifactId>
-				 <version>Greenwich.RC1</version>
+				 <version>Greenwich.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>		
 			</dependency>											
@@ -72,7 +65,7 @@
 		<dependency>
 			<groupId>org.nhind</groupId>
 			<artifactId>direct-msg-monitor</artifactId>
-			<version>6.0-SNAPSHOT</version>		
+			<version>6.0</version>		
 		</dependency>	
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -170,17 +163,17 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>	
-			<!--  for releases only 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.6.1</version>
 				<configuration>
+				    <additionalparam>-Xdoclint:none</additionalparam>
 					<charset>UTF-8</charset>
 					<docencoding>UTF-8</docencoding>
-					<docfilessubdirs>false</docfilessubdirs>
-					<detectJavaApiLink>false</detectJavaApiLink>
-					<detectLinks>false</detectLinks>
+					<docfilessubdirs>true</docfilessubdirs>
+					<detectJavaApiLink>true</detectJavaApiLink>
+					<detectLinks>true</detectLinks>
 					<source>1.8</source>
 					<show>public</show>
 				</configuration>
@@ -193,7 +186,8 @@
 	                </goals>
 	              </execution>
 	            </executions>					
-			</plugin>			
+			</plugin>	
+			<!--  for releases only 					
 	        <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-gpg-plugin</artifactId>
