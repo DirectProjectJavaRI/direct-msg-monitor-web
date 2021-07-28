@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: direct-msg-monitor
+  jpa:
+    open_in_view: false
+
+  main:
+    allow-bean-definition-overriding: true
+
+  jmx:
+    default-domain: direct-msg-monitor
+
+#Don't use rabbit as part of the health check
+management:
+  health:
+    rabbit:
+      enabled: false
+
+#unique jmx names to avoid collisions when running
+#multiple spring boot apps in an web container
+endpoints:
+  jmx:
+    default-domain: direct-msg-monitor
+    uniqueNames: true
+
+camel:
+  springboot:
+    xmlRoutes: classpath:routes/routes.xml
+
+direct:
+  msgmonitor:
+    dsnSender:
+      useSMTPGatewaySender: true
